@@ -78,6 +78,19 @@ const main = async () => {
       await connection.end();
     }
   }
+
+  if (command === "delete") {
+    const id = +process.argv[3];
+
+    const connection = await createConnection(config);
+    await connection.connect();
+
+    try {
+      await connection.query('DELETE FROM `Contact` WHERE `id` = ?', [id]);
+    } finally {
+      await connection.end();
+    }
+  }
 };
 
 main();
