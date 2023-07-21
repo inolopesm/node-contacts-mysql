@@ -53,6 +53,31 @@ const main = async () => {
       await connection.end();
     }
   }
+
+  if (command === "update") {
+    const id = +process.argv[3];
+    const name = process.argv[4];
+    const phoneNumber = process.argv[5];
+
+    const connection = await createConnection(config);
+    await connection.connect();
+
+    try {
+      await connection.beginTransaction();
+
+      await connection.query(
+        'UPDATE `Contact` SET `name` = ?, `phoneNumber` = ? WHERE `id` = ?',
+        [name, phoneNumber, id]
+      );
+
+      await connection.commit();
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      await connection.end();
+    }
+  }
 };
 
 main();
