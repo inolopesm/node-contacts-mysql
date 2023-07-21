@@ -25,6 +25,23 @@ const main = async () => {
     console.log("- node src read");
   }
 
+  if (command === "create") {
+    const name = process.argv[3];
+    const phoneNumber = process.argv[4];
+
+    const connection = await createConnection(config);
+    await connection.connect();
+
+    try {
+      await connection.query(
+        'INSERT INTO `Contact` (`name`, `phoneNumber`) VALUES (?, ?)',
+        [name, phoneNumber]
+      );
+    } finally {
+      await connection.end();
+    }
+  }
+
   if (command === "read") {
     const connection = await createConnection(config);
     await connection.connect();
